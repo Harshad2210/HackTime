@@ -26,7 +26,7 @@ export class Form extends Component {
                 [event.target.name]: event.target.value
             }
         );
-        console.log(event.target.value);
+        // console.log(event.target.value);
     }
 
     onsubmit = event => {
@@ -37,10 +37,15 @@ export class Form extends Component {
             email: email,
             message: message
         };
-        console.log(lead);
+        // console.log(lead);
 
         this.props.postLeads(lead);
-        console.log("Submit cool");
+        this.setState({
+            name: '',
+            email: '',
+            message: ''
+        })
+        // console.log("Submit cool");
     }
 
     render() {
@@ -85,3 +90,5 @@ export class Form extends Component {
 
 
 export default connect(null, { postLeads })(Form);
+
+
