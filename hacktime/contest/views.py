@@ -20,16 +20,21 @@ from rest_framework.decorators import api_view
 
 from rest_framework.schemas import *
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
 
+# @api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated,])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    http_method_names = ["post"]
+    http_method_names = ["post", "get"]
 
     def create(self, request, *args, **kwargs):
         post_data = request.data

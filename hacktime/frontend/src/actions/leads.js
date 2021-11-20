@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createMessage } from "./messages";
-import { GET_LEADS, DELETE_LEADS, POST_LEADS, GET_ERRORS } from "./types";
+import { GET_LEADS, DELETE_LEADS, POST_LEADS, GET_ERRORS, POST_USER } from "./types";
+
 
 export const getLeads = () => dispatch => {
     axios
@@ -35,7 +36,7 @@ export const postLeads = (lead) => dispatch => {
         .then(res => {
 
             dispatch(createMessage({ postLead: "Lead Added" }));
-
+            // createMessage({ postLead: "Lead Added" });
             dispatch({
                 type: POST_LEADS,
                 payload: res.data
@@ -50,5 +51,33 @@ export const postLeads = (lead) => dispatch => {
                 type: GET_ERRORS,
                 payload: error
             });
+        })
+};
+
+
+
+export const postUser = (user) => dispatch => {
+    axios
+        .post("/api/user/", user)
+        .then(res => {
+
+            dispatch(createMessage({ postUser: "New User Created" }));
+            // createMessage({ postLead: "Lead Added" });
+
+            dispatch({
+                type: POST_USER,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            // const error = {
+            //     msg: err.response.data,
+            //     status: err.response.status
+            // };
+            // dispatch({
+            //     type: GET_ERRORS,
+            //     payload: error
+            // });\
+            console.log(err);
         })
 };

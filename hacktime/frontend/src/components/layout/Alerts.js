@@ -24,6 +24,10 @@ const Alerts = ({ error, message }) => {
             alert.success(message.deleteLead);
         if (message.postLead)
             alert.success(message.postLead);
+        // if (message.passwordNotMatch)
+        //     alert.error(message.passwordNotMatch);
+        if (message.postUser)
+            alert.success(message.postUser)
     }, [message])
 
     return (
