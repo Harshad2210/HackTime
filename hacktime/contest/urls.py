@@ -10,12 +10,12 @@ from django.urls import path, include
 router = routers.DefaultRouter()
 # post api/user, body name, password, email
 # {'name': ['ashubhasdaasdsd'], 'password': ['123123sd'], 'email': ['asd@ads.com']}
-router.register(r"api/user", UserViewSet)  # register user POST
-router.register(r"api/comment", CommentViewSet)
-router.register(r"api/contest", ContestViewSet)
+router.register(r"user", UserViewSet)  # register user POST
+router.register(r"comment", CommentViewSet)
+router.register(r"contest", ContestViewSet)
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
     path("external/", external_api_view, name="home"),
     # path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     # path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

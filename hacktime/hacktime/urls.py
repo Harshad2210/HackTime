@@ -24,9 +24,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+
 urlpatterns = [
     path("", include("frontend.urls")),
     path("", include("leads.urls")),
+    path("admin/", admin.site.urls),
     path("", include("contest.urls")),
     # Login
     # POST username password

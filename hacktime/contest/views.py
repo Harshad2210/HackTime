@@ -29,8 +29,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
 
-# @api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated,])
+# # @api_view(["GET", "POST"])
+# @permission_classes(
+#     [
+#         IsAuthenticated,
+#     ]
+# )
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -56,31 +60,64 @@ class ContestViewSet(viewsets.ModelViewSet):
     serializer_class = ContestSerializer
 
 
-MAX_RETRIES = 2
+"""
+API response 
+{
+    "duration": 11700,
+    "end": "2021-06-26T17:15:00",
+    "event": "June Lunchtime 2021",
+    "href": "https://www.codechef.com/LTIME97",
+    "id": 26473527,
+    "resource": {
+        "icon": "/imagefit/static_resize/64x64/img/resources/codechef_com.png",
+        "id": 2,
+        "name": "codechef.com"
+    },
+    "start": "2021-06-26T14:00:00"
+},
+"""
 
 
 @api_view(("GET",))
 def external_api_view(request):
+    MAX_RETRIES = 2
+    clist_response = None
     if request.method == "GET":
-        # return Response({"error": "asd"}, status=status.HTTP_200_OK)
-
         attempt_num = 0  # keep track of how many times we've retried
         while attempt_num < MAX_RETRIES:
-            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2"
+            # url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2"
+            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=10"
             payload = {
                 "username": "1245lazy",
                 "api_key": "47f40103516e25683bbbdf206abad617e4387562",
-                "resource__id": "2",
+                "resource__id": "2",  # this is requesting contest list
             }
             r = requests.get(url, payload)
-            print(r)
+            # print(r)
             if r.status_code == 200:
                 data = r.json()
+                clist_response = r.json()
+                # clist_response = json.load(clist_response)
+                for cur_contest in clist_response["objects"]:
+                    cur_id = int(cur_contest["id"])
+                    cheese_blog = Contest.objects.filter(id=cur_id)
+                    if len(cheese_blog) == 0:  # new contest
+                        new_contest = Contest(
+                            link=cur_contest["href"], id=cur_contest["id"]
+                        )
+                        new_contest.save() 
+                    else:
+                        print(cheese_blog)
+
+                # print(clist_response["objects"][0]["duration"])
+                # print(clist_response["objects"])
+                # print(clist_response["objects"]["duration"])
                 return Response(data, status=status.HTTP_200_OK)
             else:
                 attempt_num += 1
                 # You can probably use a logger to log the error here
                 time.sleep(5)  # Wait for 5 seconds before re-trying
+
         return Response({"error": "Request failed"}, status=r.status_code)
     else:
         return Response({"error": "asd"}, status=status.HTTP_200_OK)

@@ -5,19 +5,19 @@ from rest_framework import serializers
 from .models import *
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["username", "password"]
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
 
 
-class ContestSerializer(serializers.HyperlinkedModelSerializer):
+class ContestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contest
         fields = "__all__"
