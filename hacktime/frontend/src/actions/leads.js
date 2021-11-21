@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createMessage } from "./messages";
-import { GET_LEADS, DELETE_LEADS, POST_LEADS, GET_ERRORS, POST_USER } from "./types";
+import { GET_LEADS, DELETE_LEADS, POST_LEADS, GET_ERRORS, POST_USER, GET_CONTESTS } from "./types";
 
 
 export const getLeads = () => dispatch => {
@@ -80,4 +80,16 @@ export const postUser = (user) => dispatch => {
             // });\
             console.log(err);
         })
+};
+
+export const getContests = () => dispatch => {
+    axios
+        .get("/api/contest/")
+        .then(res => {
+            dispatch({
+                type: GET_CONTESTS,
+                payload: res.data
+            });
+        })
+        .catch(err => console.log(err))
 };

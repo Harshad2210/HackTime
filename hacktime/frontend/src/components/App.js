@@ -15,6 +15,8 @@ import {
 import Alerts from "../components/layout/Alerts";
 import Login from "../components/accounts/Login";
 import Register from "../components/accounts/Register";
+import Contest from "./contest/Contest";
+import DashboardContest from "./contest/DashboardContest";
 
 
 const alertOptions = {
@@ -35,7 +37,7 @@ export class App extends Component {
                             <div className="container">
                                 <Switch>
                                     <Route exact path="/">
-                                        <Dashboard />
+                                        <DashboardContest />
                                     </Route>
                                     <Route exact path="/register">
                                         <Register />

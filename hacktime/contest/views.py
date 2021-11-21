@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
+# import datetime
+from datetime import date, datetime
 
 # from django.contrib.auth.models import User
 from .models import Contest, Comment
@@ -101,12 +103,24 @@ def external_api_view(request):
                 for cur_contest in clist_response["objects"]:
                     cur_id = int(cur_contest["id"])
                     cheese_blog = Contest.objects.filter(id=cur_id)
+                    dateTemp = datetime.now()
+                    dateNew = dateTemp.date()
+                    print("Here is a date: ", dateNew)
+                    print("Here is a dateTime: ", dateTemp)
+
                     if len(cheese_blog) == 0:  # new contest
+
+                        # print("Here is from api", cur_contest["date"])
                         new_contest = Contest(
-                            link=cur_contest["href"], id=cur_contest["id"]
+                            link=cur_contest["href"],
+                            id=cur_contest["id"],
+                            details=cur_contest["event"],
+                            date=date(2021, 12, 12),
+                            # giving error if I use date = cur_contest["date"]
                         )
-                        new_contest.save() 
+                        new_contest.save()
                     else:
+                        # print(date(cur_contest["date"]))
                         print(cheese_blog)
 
                 # print(clist_response["objects"][0]["duration"])
