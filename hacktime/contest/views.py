@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 # import datetime
 from datetime import date, datetime
 
+from rest_framework.schemas.coreapi import common_path
+
 # from django.contrib.auth.models import User
 from .models import Contest, Comment
 from rest_framework.response import Response
@@ -30,13 +32,37 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def create(self, request, *args, **kwargs):
+        comment_data = request.data
+        user = request.user
+        print(comment_data, user.id)
+        contest_id = comment_data["parentContest"]
+        contest = Contest.objects.get(id=contest_id)
+        # commentBy = models.ForeignKey(User, on_delete=CASCADE)
+        # commentText = models.CharField(max_length=100)
+        # parentComment = models.ForeignKey(
+        #     "self", on_delete=CASCADE, default=None, blank=True, null=True
+        # )  # self = comment
+        # parentContest = models.ForeignKey(Contest, on_delete=CASCADE, default=None)
+        new_comment = Comment(
+            commentBy=user,
+            commentText=comment_data["commentText"],
+            parentComment=None,
+            parentContest=contest,
+        )
+        new_comment.save()
 
-# # @api_view(["GET", "POST"])
-# @permission_classes(
-#     [
-#         IsAuthenticated,
-#     ]
-# )
+        # new_user = User(username=post_data["name"], email=post_data["email"])
+        # new_user.set_password(post_data["password"])
+
+        # try:
+        #     new_user.save()
+        # except:
+        #     return Response("error in user data", status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(data="Created user", status=status.HTTP_201_CREATED)
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -88,7 +114,7 @@ def external_api_view(request):
         attempt_num = 0  # keep track of how many times we've retried
         while attempt_num < MAX_RETRIES:
             # url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2"
-            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=10"
+            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=400"
             payload = {
                 "username": "1245lazy",
                 "api_key": "47f40103516e25683bbbdf206abad617e4387562",
@@ -105,17 +131,25 @@ def external_api_view(request):
                     cheese_blog = Contest.objects.filter(id=cur_id)
                     dateTemp = datetime.now()
                     dateNew = dateTemp.date()
-                    print("Here is a date: ", dateNew)
-                    print("Here is a dateTime: ", dateTemp)
+                    # print("Here is a date: ", dateNew)
+                    # print("Here is a dateTime: ", dateTemp)
+                    parsed_date = datetime.strptime(
+                        cur_contest["start"][:10], "%Y-%m-%d"
+                    )
+                    print("Here is from api", parsed_date)
+
+                    if parsed_date < dateTemp:
+                        continue
 
                     if len(cheese_blog) == 0:  # new contest
 
-                        # print("Here is from api", cur_contest["date"])
+                        # from datetime import datetime
+
                         new_contest = Contest(
                             link=cur_contest["href"],
                             id=cur_contest["id"],
                             details=cur_contest["event"],
-                            date=date(2021, 12, 12),
+                            date=parsed_date,
                             # giving error if I use date = cur_contest["date"]
                         )
                         new_contest.save()
