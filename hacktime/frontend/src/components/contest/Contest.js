@@ -25,21 +25,19 @@ const Contest = ({ contest, updateDetailsContest }) => {
 
 
     return (
-        <div className=" container m-3" >
-            <div className="card text-center" >
+
+        <div className=" container m-3 ml-1"  >
+            <div className="card" style={{ width: "80%" }}>
                 <div className="card-header">
-                    Codechef
+                    <a href={contest.link}> Register   </a>
                 </div>
-                <div className="card-body">
-                    <h5 className="card-title"> <a href={contest.link}> {contest.details}  </a> </h5>
-                    {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
-                    {/* <a href="#" className="btn btn-primary">Details</a> */}
+                <div className="card-body w-75">
+                    <h5 className="card-title">{contest.details}</h5>
+                    <p className="card-text">{db} days left</p>
                     <Link onClick={() => updateDetailsContest(contest)} to="/details" className="btn btn-primary">
                         Details
                     </Link>
-                </div>
-                <div className="card-footer text-muted">
-                    {db} days left
+                    {/* <a href="#" className="btn btn-primary">Comment</a> */}
                 </div>
             </div>
         </div>

@@ -7,5 +7,8 @@ export const POST_USER = "POST_USER";
 export const GET_CONTESTS = "GET_LEADS";
 export const UPDATE_DETAILS_CONTEST = "UPDATE_DETAILS_CONTEST";
 export const GET_DETAILS_CONTEST = "GET_DETAILS_CONTEST";
+export const POST_COMMENT = "POST_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";
+
 
 
