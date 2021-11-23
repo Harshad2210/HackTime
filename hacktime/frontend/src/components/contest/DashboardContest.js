@@ -4,6 +4,7 @@ import { getContests } from '../../actions/leads';
 import PropTypes from 'prop-types';
 import Contest from './Contest';
 
+
 const DashboardContest = ({ getContests, contests }) => {
 
     useEffect(() => {

@@ -3,12 +3,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
-# import datetime
 from datetime import date, datetime
 
 from rest_framework.schemas.coreapi import common_path
 
-# from django.contrib.auth.models import User
 from .models import Contest, Comment
 from rest_framework.response import Response
 from rest_framework import viewsets, status, permissions, views
@@ -18,9 +16,6 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
-# blacklist token
-# from rest_framework_simplejwt.tokens import RefreshToken
-# from rest_framework.decorators import action, api_view, schema
 
 from rest_framework.schemas import *
 
@@ -38,12 +33,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         print(comment_data, user.id)
         contest_id = comment_data["parentContest"]
         contest = Contest.objects.get(id=contest_id)
-        # commentBy = models.ForeignKey(User, on_delete=CASCADE)
-        # commentText = models.CharField(max_length=100)
-        # parentComment = models.ForeignKey(
-        #     "self", on_delete=CASCADE, default=None, blank=True, null=True
-        # )  # self = comment
-        # parentContest = models.ForeignKey(Contest, on_delete=CASCADE, default=None)
+
         new_comment = Comment(
             commentBy=user,
             commentText=comment_data["commentText"],
@@ -51,16 +41,15 @@ class CommentViewSet(viewsets.ModelViewSet):
             parentContest=contest,
         )
         new_comment.save()
-
-        # new_user = User(username=post_data["name"], email=post_data["email"])
-        # new_user.set_password(post_data["password"])
-
-        # try:
-        #     new_user.save()
-        # except:
-        #     return Response("error in user data", status=status.HTTP_400_BAD_REQUEST)
-
         return Response(data="Created user", status=status.HTTP_201_CREATED)
+
+
+"""
+
+
+
+
+"""
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -88,24 +77,6 @@ class ContestViewSet(viewsets.ModelViewSet):
     serializer_class = ContestSerializer
 
 
-"""
-API response 
-{
-    "duration": 11700,
-    "end": "2021-06-26T17:15:00",
-    "event": "June Lunchtime 2021",
-    "href": "https://www.codechef.com/LTIME97",
-    "id": 26473527,
-    "resource": {
-        "icon": "/imagefit/static_resize/64x64/img/resources/codechef_com.png",
-        "id": 2,
-        "name": "codechef.com"
-    },
-    "start": "2021-06-26T14:00:00"
-},
-"""
-
-
 @api_view(("GET",))
 def external_api_view(request):
     MAX_RETRIES = 2
@@ -113,7 +84,6 @@ def external_api_view(request):
     if request.method == "GET":
         attempt_num = 0  # keep track of how many times we've retried
         while attempt_num < MAX_RETRIES:
-            # url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2"
             url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=400"
             payload = {
                 "username": "1245lazy",
@@ -131,8 +101,6 @@ def external_api_view(request):
                     cheese_blog = Contest.objects.filter(id=cur_id)
                     dateTemp = datetime.now()
                     dateNew = dateTemp.date()
-                    # print("Here is a date: ", dateNew)
-                    # print("Here is a dateTime: ", dateTemp)
                     parsed_date = datetime.strptime(
                         cur_contest["start"][:10], "%Y-%m-%d"
                     )
@@ -142,24 +110,16 @@ def external_api_view(request):
                         continue
 
                     if len(cheese_blog) == 0:  # new contest
-
-                        # from datetime import datetime
-
                         new_contest = Contest(
                             link=cur_contest["href"],
                             id=cur_contest["id"],
                             details=cur_contest["event"],
                             date=parsed_date,
-                            # giving error if I use date = cur_contest["date"]
                         )
                         new_contest.save()
                     else:
-                        # print(date(cur_contest["date"]))
                         print(cheese_blog)
 
-                # print(clist_response["objects"][0]["duration"])
-                # print(clist_response["objects"])
-                # print(clist_response["objects"]["duration"])
                 return Response(data, status=status.HTTP_200_OK)
             else:
                 attempt_num += 1
@@ -171,18 +131,19 @@ def external_api_view(request):
         return Response({"error": "asd"}, status=status.HTTP_200_OK)
 
 
-# class BlacklistTokenView(views.APIView):
-#     premission_classes = [permissions.AllowAny]
-
-#     def post(self, request):
-#         try:
-#             refresh_token = request.data[
-#                 "refresh_token"
-#             ]  # cur refresh token of the user
-
-#             token = RefreshToken(refresh_token)  # create new refresh token
-#             token.blacklist()  # blacklist this new refresh token
-#         except Exception as e:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-#         return Response(data="logout is done", status=status.HTTP_200_OK)
+"""
+API response 
+{
+    "duration": 11700,
+    "end": "2021-06-26T17:15:00",
+    "event": "June Lunchtime 2021",
+    "href": "https://www.codechef.com/LTIME97",
+    "id": 26473527,
+    "resource": {
+        "icon": "/imagefit/static_resize/64x64/img/resources/codechef_com.png",
+        "id": 2,
+        "name": "codechef.com"
+    },
+    "start": "2021-06-26T14:00:00"
+},
+"""

@@ -18,6 +18,10 @@ from django.urls import path, include
 from rest_framework import routers
 from contest.views import UserViewSet, CommentViewSet, ContestViewSet, external_api_view
 
+from rest_framework import routers
+from contest.views import UserViewSet, CommentViewSet, external_api_view, ContestViewSet
+from django.urls import path, include
+
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -28,19 +32,8 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path("", include("frontend.urls")),
     path("", include("leads.urls")),
-    path("admin/", admin.site.urls),
     path("", include("contest.urls")),
-    # Login
-    # POST username password
-    # refresh ac -> if works
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("admin/", admin.site.urls),
 ]
-# urlpatterns = [
-#     path("", include(router.urls)),
-#     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-#     # path("", include("frontend.urls")),
-#     # path("", include("leads.urls")),
-#     path("external/", external_api_view, name="home"),
-#
-# ]

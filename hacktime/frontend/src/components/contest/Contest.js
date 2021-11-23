@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { updateDetailsContest } from '../../actions/details';
+import PropTypes from 'prop-types';
 
-const Contest = ({ contest }) => {
+
+const Contest = ({ contest, updateDetailsContest }) => {
 
     const days_between = (date1, date2) => {
 
@@ -19,7 +24,6 @@ const Contest = ({ contest }) => {
     let db = days_between(dl, d);
 
 
-
     return (
         <div className=" container m-3" >
             <div className="card text-center" >
@@ -29,7 +33,10 @@ const Contest = ({ contest }) => {
                 <div className="card-body">
                     <h5 className="card-title"> <a href={contest.link}> {contest.details}  </a> </h5>
                     {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
-                    <a href="#" className="btn btn-primary">Comment</a>
+                    {/* <a href="#" className="btn btn-primary">Details</a> */}
+                    <Link onClick={() => updateDetailsContest(contest)} to="/details" className="btn btn-primary">
+                        Details
+                    </Link>
                 </div>
                 <div className="card-footer text-muted">
                     {db} days left
@@ -39,4 +46,11 @@ const Contest = ({ contest }) => {
     )
 }
 
-export default Contest
+
+Contest.propTypes = ({
+    updateDetailsContest: PropTypes.func.isRequired,
+    contest: PropTypes.object.isRequired,
+});
+
+// export default Contest
+export default connect(null, { updateDetailsContest })(Contest);

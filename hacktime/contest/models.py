@@ -16,24 +16,6 @@ from django.utils import tree
 #     password = models.CharField(max_length=30)
 
 
-"""
-API response 
-{
-    "duration": 11700,
-    "end": "2021-06-26T17:15:00",
-    "event": "June Lunchtime 2021",
-    "href": "https://www.codechef.com/LTIME97",
-    "id": 26473527,
-    "resource": {
-        "icon": "/imagefit/static_resize/64x64/img/resources/codechef_com.png",
-        "id": 2,
-        "name": "codechef.com"
-    },
-    "start": "2021-06-26T14:00:00"
-},
-"""
-
-
 class Contest(models.Model):
     date = models.DateField(default="2021-12-12")  # end
     votes = models.IntegerField(default=0)
@@ -50,3 +32,21 @@ class Comment(models.Model):
         "self", on_delete=CASCADE, default=None, blank=True, null=True
     )  # self = comment
     parentContest = models.ForeignKey(Contest, on_delete=CASCADE, default=None)
+
+
+"""
+API response 
+{
+    "duration": 11700,
+    "end": "2021-06-26T17:15:00",
+    "event": "June Lunchtime 2021",
+    "href": "https://www.codechef.com/LTIME97",
+    "id": 26473527,
+    "resource": {
+        "icon": "/imagefit/static_resize/64x64/img/resources/codechef_com.png",
+        "id": 2,
+        "name": "codechef.com"
+    },
+    "start": "2021-06-26T14:00:00"
+},
+"""
