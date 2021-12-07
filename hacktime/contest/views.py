@@ -76,6 +76,14 @@ class ContestViewSet(viewsets.ModelViewSet):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
 
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Contest.objects.order_by("-date")
+
 
 @api_view(("GET",))
 def external_api_view(request):
@@ -84,7 +92,7 @@ def external_api_view(request):
     if request.method == "GET":
         attempt_num = 0  # keep track of how many times we've retried
         while attempt_num < MAX_RETRIES:
-            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=400"
+            url = "https://clist.by/api/v1/contest/?username=1245lazy&api_key=47f40103516e25683bbbdf206abad617e4387562&resource__id=2&limit=50"
             payload = {
                 "username": "1245lazy",
                 "api_key": "47f40103516e25683bbbdf206abad617e4387562",
@@ -106,8 +114,8 @@ def external_api_view(request):
                     )
                     print("Here is from api", parsed_date)
 
-                    if parsed_date < dateTemp:
-                        continue
+                    # if parsed_date < dateTemp:
+                    # continue
 
                     if len(cheese_blog) == 0:  # new contest
                         new_contest = Contest(

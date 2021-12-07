@@ -17,8 +17,7 @@ export const getComment = () => dispatch => {
 };
 
 export const postComment = (comment) => dispatch => {
-    const varToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM3ODc0OTI5LCJpYXQiOjE2Mzc3MDIxMjksImp0aSI6ImM2YTg0N2ZiYTg5NDQwNWFhZTZkZDA1N2FiMjNkYmQ1IiwidXNlcl9pZCI6NH0.-TU2uoZlZx2HfKX07hjZLW6yJk8t6WFKe9j3GffVDGA";
-
+    const varToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM5MDc0Nzc2LCJpYXQiOjE2Mzg5MDE5NzYsImp0aSI6IjYwOTQ2NjJkNmY1YzRiN2ViYjY5ZDYwYTQ1N2I4NDk5IiwidXNlcl9pZCI6MTV9.PvLHsMcqaGN-dufy0vG75pEypgYXj2R6V4cXL8rKwho"
     axios
         .post("/api/comment/", comment, {
             headers: {
