@@ -17,7 +17,7 @@ export const getComment = () => dispatch => {
 };
 
 export const postComment = (comment) => dispatch => {
-    const varToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM5MDc0Nzc2LCJpYXQiOjE2Mzg5MDE5NzYsImp0aSI6IjYwOTQ2NjJkNmY1YzRiN2ViYjY5ZDYwYTQ1N2I4NDk5IiwidXNlcl9pZCI6MTV9.PvLHsMcqaGN-dufy0vG75pEypgYXj2R6V4cXL8rKwho"
+    const varToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjM5MDc4MTI1LCJpYXQiOjE2Mzg5MDUzMjUsImp0aSI6IjVkNzI1YTAxN2M1MTQzOTE5ZjFlYWViN2M4MzdjNGE5IiwidXNlcl9pZCI6MTZ9.Olu0viLiQHh4S3yBHiXrrmyahWcndKq880QDgARrWQ8"
     axios
         .post("/api/comment/", comment, {
             headers: {
@@ -26,7 +26,10 @@ export const postComment = (comment) => dispatch => {
         })
         .then(res => {
 
+
             dispatch(createMessage({ postComment: "Comment Added" }));
+
+
             // createMessage({ postLead: "Lead Added" });
             dispatch({
                 type: POST_COMMENT,

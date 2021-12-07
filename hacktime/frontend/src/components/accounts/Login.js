@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { postLogin } from '../../actions/leads';
 // import { login } from '../../actions/auth';
+import { createMessage } from '../../actions/messages';
+
 
 export class Login extends Component {
     state = {
@@ -10,14 +13,11 @@ export class Login extends Component {
         password: '',
     };
 
-    // static propTypes = {
-    //     login: PropTypes.func.isRequired,
-    //     isAuthenticated: PropTypes.bool,
-    // };
 
     onSubmit = (e) => {
         e.preventDefault();
-        // this.props.login(this.state.username, this.state.password);
+        this.props.postLogin(this.state);
+        console.log("Submit Login");
     };
 
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -69,9 +69,8 @@ export class Login extends Component {
     }
 }
 
-// const mapStateToProps = (state) => ({
-//     isAuthenticated: state.auth.isAuthenticated,
-// });
+Comment.propTypes = ({
+    postLogin: PropTypes.func.isRequired,
+});
 
-export default Login;
-// export default connect(mapStateToProps, { login })(Login);
+export default connect(null, { postLogin, createMessage })(Login);

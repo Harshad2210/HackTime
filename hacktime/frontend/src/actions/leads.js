@@ -61,6 +61,7 @@ export const postUser = (user) => dispatch => {
         .post("/api/user/", user)
         .then(res => {
 
+
             dispatch(createMessage({ postUser: "New User Created" }));
             // createMessage({ postLead: "Lead Added" });
 
@@ -78,6 +79,24 @@ export const postUser = (user) => dispatch => {
             //     type: GET_ERRORS,
             //     payload: error
             // });\
+            console.log(err);
+        })
+};
+
+export const postLogin = (user) => dispatch => {
+    axios
+        .post("/api/token/", user)
+        .then(res => {
+            console.log(res);
+            if (res.status === 200)
+                dispatch(createMessage({ postLogin: "User login succefully" }));
+            else
+                dispatch(createMessage({ postLogin: "User login unsucceful" }));
+
+            // dispatch(createMessage({ postLoginFail: "Login failed,please check your username & password" }));
+
+        })
+        .catch(err => {
             console.log(err);
         })
 };

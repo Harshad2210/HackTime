@@ -28,6 +28,10 @@ const Alerts = ({ error, message }) => {
         //     alert.error(message.passwordNotMatch);
         if (message.postUser)
             alert.success(message.postUser)
+        if (message.postLogin)
+            alert.success(message.postLogin)
+        if (message.postLoginFail)
+            alert.error(message.postLogin)
     }, [message])
 
     return (
